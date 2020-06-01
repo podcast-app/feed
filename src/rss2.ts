@@ -1,7 +1,7 @@
 import * as convert from "xml-js";
 import { generator } from "./config";
 import { Feed } from "./feed";
-import { Author, Category, Enclosure, Item } from "./typings";
+import { Author, Category, Enclosure, Extension, Item } from "./typings";
 
 /**
  * Returns a RSS 2.0 feed
@@ -186,6 +186,12 @@ export default (ins: Feed) => {
 
     if (entry.video) {
       item.enclosure = formatEnclosure(entry.video, "video");
+    }
+
+    if (entry.extensions) {
+      entry.extensions.map((e: Extension) => {
+        item[e.name] = e.objects;
+      });
     }
 
     base.rss.channel.item.push(item);
